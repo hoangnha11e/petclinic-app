@@ -13,7 +13,7 @@ RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline -f $SERVICE/pom.xml
 
 COPY $SERVICE/src $SERVICE/src
-RUN ./mvnw package -f $SERVICE/pom.xml -o
+RUN ./mvnw package -f $SERVICE/pom.xml
 
 ## run stage ##
 FROM eclipse-temurin:17-jre-noble
