@@ -48,7 +48,11 @@ pipeline {
                         toBuild.each { s ->
                             //parallelStages[s] = {
                                 stage(s) {
-                                    withEnv (["SERVICE=${s}"]) {
+                                    def ss = s.replace('petclinic-', '')
+                                    withEnv ([
+                                        "SERVICE=${s}",
+                                        "SERVICE_SHORT=${ss}"
+                                    ]) {
                                         withCredentials ([
                                             string (credentialsId: 'IMAGE_REGISTRY', variable: 'IMAGE_REGISTRY'),
                                             string (credentialsId: 'IMAGE_PROJECT', variable: 'IMAGE_PROJECT'),
@@ -61,7 +65,7 @@ pipeline {
                                                 docker build --build-arg "SERVICE=$SERVICE" -t "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT" .
                                                 docker push "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT"
                                                 docker rmi "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT"
-                                                yq -i '.services[strenv(SERVICE)].image = strenv(IMAGE_REGISTRY)+"/"+strenv(IMAGE_PROJECT)+"/"+strenv(SERVICE)+":"+strenv(GIT_COMMIT)' /app/jenkins/petclinic/docker-compose.yml
+                                                yq -i '.services[strenv(SERVICE_SHORT)].image = strenv(IMAGE_REGISTRY)+"/"+strenv(IMAGE_PROJECT)+"/"+strenv(SERVICE)+":"+strenv(GIT_COMMIT)' /app/jenkins/petclinic/docker-compose.yml
                                             '''
                                         }
                                     }
