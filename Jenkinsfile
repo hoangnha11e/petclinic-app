@@ -87,10 +87,14 @@ pipeline {
                         echo "$IMAGE_PASSWORD" | docker login -u "$IMAGE_USERNAME" --password-stdin "$IMAGE_REGISTRY"
                         cd /app/jenkins/petclinic
                         docker compose up -d
-                        docker image prune -af
                     '''
                 }
             }
+        }
+    }
+    post {
+        always {
+            sh 'docker image prune -af'
         }
     }
 }
