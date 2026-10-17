@@ -85,12 +85,13 @@ pipeline {
                     string (credentialsId: 'IMAGE_REGISTRY', variable: 'IMAGE_REGISTRY'),
                     string (credentialsId: 'IMAGE_USERNAME', variable: 'IMAGE_USERNAME'),
                     string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD')
+                    string (credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY')
                 ]) {
                     sh '''
                         trap 'docker logout "$IMAGE_REGISTRY"' EXIT
                         echo "$IMAGE_PASSWORD" | docker login -u "$IMAGE_USERNAME" --password-stdin "$IMAGE_REGISTRY"
                         cd /app/jenkins/petclinic
-                        docker compose up -d
+                        OPENAI_API_KEY="$OPENAI_API_KEY" docker compose up -d
                     '''
                 }
             }

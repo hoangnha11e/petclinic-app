@@ -8,6 +8,12 @@ spring:
   profiles:
     active: production
 
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
 ---
 spring:
   config:

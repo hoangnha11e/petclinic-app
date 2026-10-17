@@ -45,6 +45,13 @@ spring:
                 - CircuitBreaker=name=genaiCircuitBreaker,fallbackUri=/fallback
   reactor:
     context-propagation: auto
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
 ---
 spring:
   config:
