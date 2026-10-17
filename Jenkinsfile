@@ -57,7 +57,7 @@ pipeline {
                                             string (credentialsId: 'IMAGE_REGISTRY', variable: 'IMAGE_REGISTRY'),
                                             string (credentialsId: 'IMAGE_PROJECT', variable: 'IMAGE_PROJECT'),
                                             string (credentialsId: 'IMAGE_USERNAME', variable: 'IMAGE_USERNAME'),
-                                            string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD')
+                                            string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD'),
                                         ]) {
                                             sh '''
                                                 trap 'docker logout "$IMAGE_REGISTRY"' EXIT
@@ -84,8 +84,8 @@ pipeline {
                 withCredentials ([
                     string (credentialsId: 'IMAGE_REGISTRY', variable: 'IMAGE_REGISTRY'),
                     string (credentialsId: 'IMAGE_USERNAME', variable: 'IMAGE_USERNAME'),
-                    string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD')
-                    string (credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY')
+                    string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD'),
+                    string (credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY'),
                 ]) {
                     sh '''
                         trap 'docker logout "$IMAGE_REGISTRY"' EXIT
