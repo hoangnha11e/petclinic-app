@@ -72,7 +72,7 @@ pipeline {
                         }
                         //parallel parallelStages
                     } else {
-                        echo 'No services need to be built.'
+                        echo 'No services need  be built.'
                     }
                 }
             }
