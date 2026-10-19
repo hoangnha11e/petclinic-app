@@ -62,9 +62,7 @@ pipeline {
                                             sh '''
                                                 trap 'docker logout "$IMAGE_REGISTRY"' EXIT
                                                 echo "$IMAGE_PASSWORD" | docker login -u "$IMAGE_USERNAME" --password-stdin "$IMAGE_REGISTRY"
-                                                docker build --build-arg "SERVICE=$SERVICE" -t "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT" .
-                                                docker push "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT"
-                                                docker rmi "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT"
+                                                docker buildx build --build-arg "SERVICE=$SERVICE" -t "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT" --cache-from "type=registry,ref=$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:buildcache"  --cache-to "type=registry,ref=$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:buildcache,mode=max" --push .
                                                 yq -i '.services[strenv(SERVICE_SHORT)].image = strenv(IMAGE_REGISTRY)+"/"+strenv(IMAGE_PROJECT)+"/"+strenv(SERVICE)+":"+strenv(GIT_COMMIT)' /app/jenkins/petclinic/docker-compose.yml
                                             '''
                                         }
