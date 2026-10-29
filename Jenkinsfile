@@ -1,5 +1,9 @@
 pipeline {
     agent { label 'build-agent' }
+    options {
+        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
+    }
     stages {
         stage('build') {
             steps {
@@ -57,13 +61,13 @@ pipeline {
                                             string (credentialsId: 'IMAGE_REGISTRY', variable: 'IMAGE_REGISTRY'),
                                             string (credentialsId: 'IMAGE_PROJECT', variable: 'IMAGE_PROJECT'),
                                             string (credentialsId: 'IMAGE_USERNAME', variable: 'IMAGE_USERNAME'),
-                                            string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD'),
+                                            string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD')
                                         ]) {
                                             sh '''
                                                 trap 'docker logout "$IMAGE_REGISTRY"' EXIT
                                                 echo "$IMAGE_PASSWORD" | docker login -u "$IMAGE_USERNAME" --password-stdin "$IMAGE_REGISTRY"
-                                                docker buildx build --build-arg "SERVICE=$SERVICE" -t "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT" --cache-from "type=registry,ref=$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:buildcache"  --cache-to "type=registry,ref=$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:buildcache,mode=max" --push .
-                                                yq -i '.services[strenv(SERVICE_SHORT)].image = strenv(IMAGE_REGISTRY)+"/"+strenv(IMAGE_PROJECT)+"/"+strenv(SERVICE)+":"+strenv(GIT_COMMIT)' /app/jenkins/petclinic/docker-compose.yml
+                                                docker buildx build --build-arg "SERVICE=$SERVICE" -t "$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:$GIT_COMMIT" --cache-from "type=registry,ref=$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:buildcache"  --cache-to "type=registry,ref=$IMAGE_REGISTRY/$IMAGE_PROJECT/$SERVICE:buildcache,mode=max" --push . 
+                                                yq -i '.services[strenv(SERVICE_SHORT)].image = strenv(IMAGE_REGISTRY)+"/"+strenv(IMAGE_PROJECT)+"/"+strenv(SERVICE)+":"+strenv(GIT_COMMIT)' /app/jenkins/petclinic/charts/petclinic/values.yaml
                                             '''
                                         }
                                     }
@@ -71,33 +75,31 @@ pipeline {
                             //}
                         }
                         //parallel parallelStages
+                        withCredentials ([
+                            string (credentialsId: 'GITOPS_URL', variable: 'GITOPS_URL')
+                        ]) {
+                            sh '''
+                                cd /app/jenkins/petclinic
+                                git add .
+                                if git diff --cached --quiet; then
+                                    echo "No changes to commit."
+                                else
+                                    code=$?
+                                    if [ "$code" -eq 1 ]; then
+                                        git commit -m "ci(agc): update values.yaml - by build: $BUILD_NUMBER"
+                                    else
+                                        echo "git diff failed with exit code $code" >&2
+                                        exit "$code"
+                                    fi
+                                fi
+                                git -c credential.helper= push "$GITOPS_URL" HEAD:main
+                            '''
+                        }
                     } else {
                         echo 'No services need to be built.'
                     }
                 }
             }
-        }
-        stage('deploy') {
-            steps {
-                withCredentials ([
-                    string (credentialsId: 'IMAGE_REGISTRY', variable: 'IMAGE_REGISTRY'),
-                    string (credentialsId: 'IMAGE_USERNAME', variable: 'IMAGE_USERNAME'),
-                    string (credentialsId: 'IMAGE_PASSWORD', variable: 'IMAGE_PASSWORD'),
-                    string (credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY'),
-                ]) {
-                    sh '''
-                        trap 'docker logout "$IMAGE_REGISTRY"' EXIT
-                        echo "$IMAGE_PASSWORD" | docker login -u "$IMAGE_USERNAME" --password-stdin "$IMAGE_REGISTRY"
-                        cd /app/jenkins/petclinic
-                        OPENAI_API_KEY="$OPENAI_API_KEY" docker compose up -d
-                    '''
-                }
-            }
-        }
-    }
-    post {
-        always {
-            sh 'docker image prune -af'
         }
     }
 }
