@@ -86,7 +86,7 @@ pipeline {
                                 else
                                     code=$?
                                     if [ "$code" -eq 1 ]; then
-                                        git commit -m "ci(agc): update values.yaml - by build: $BUILD_NUMBER"
+                                        git commit -m "cd(agc): update values.yaml - by build: $BUILD_NUMBER"
                                     else
                                         echo "git diff failed with exit code $code" >&2
                                         exit "$code"
