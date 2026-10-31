@@ -96,7 +96,7 @@ pipeline {
                             '''
                         }
                     } else {
-                        echo 'No services need to be built.'
+                        echo 'No services ned to be built.'
                     }
                 }
             }
