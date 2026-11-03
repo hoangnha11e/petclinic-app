@@ -16,8 +16,7 @@ The project uses the following Docker Hub repositories to store the container im
 
 - **Admin Server** (`petclinic-admin-server`) — 
 https://hub.docker.com/repository/docker/hoangnha11e/petclinic-admin-server
-- **API Gateway** (`petclinic-api-gateway`) — 
-https://hub.docker.com/repository/docker/hoangnha11e/petclinic-api-gateway
+- **API Gateway** (`petclinic-api-gateway`) —                                                                                       https://hub.docker.com/repository/docker/hoangnha11e/petclinic-api-gateway
 - **Config Server** (`petclinic-config-server`) — 
 https://hub.docker.com/repository/docker/hoangnha11e/petclinic-config-server
 - **Customers Service** (`petclinic-customers-service`) — 
