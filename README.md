@@ -99,9 +99,7 @@ Metrics Server collects CPU and memory utilization metrics from pods running on 
 
 **Node Scaling**
 
-Cluster Autoscaler monitors pod scheduling status and detects pods that cannot be scheduled due to insufficient resources. When additional computing capacity is required, Cluster Autoscaler requests the Auto Scaling Group to scale out the node group.
-
-The Auto Scaling Group manages the number of EC2 Worker Nodes, allowing the EKS Cluster to automatically scale its computing capacity up or down based on demand.
+Cluster Autoscaler monitors pod scheduling status and detects pods that cannot be scheduled due to insufficient resources. When additional computing capacity is required, Cluster Autoscaler requests the Auto Scaling Group to scale out the node group. The Auto Scaling Group manages the number of EC2 Worker Nodes, allowing the EKS Cluster to automatically scale its computing capacity up or down based on demand.
 
 **Secret Management**
 
