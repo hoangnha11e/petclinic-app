@@ -12,17 +12,6 @@ The project is organized into three separate repositories:
 - **GitOps Repository** (`petclinic-gitops`) — https://github.com/hoangnha11e/petclinic-gitops
 - **Infrastructure Repository** (`petclinic-infra`) — https://github.com/hoangnha11e/petclinic-infra
 
-The project uses the following Docker Hub repositories to store the container images of its eight microservices:
-
-- **Admin Server** (`petclinic-admin-server`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-admin-server
-- **API Gateway** (`petclinic-api-gateway`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-api-gateway
-- **Config Server** (`petclinic-config-server`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-config-server
-- **Customers Service** (`petclinic-customers-service`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-customers-service
-- **Discovery Server** (`petclinic-discovery-server`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-discovery-server
-- **GenAI Service** (`petclinic-genai-service`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-genai-service
-- **Vets Service** (`petclinic-vets-service`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-vets-service
-- **Visits Service** (`petclinic-visits-service`) — https://hub.docker.com/repository/docker/hoangnha11e/petclinic-visits-service
-
 # 2. Techstack
 
 <table align="center" width="100%">
