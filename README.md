@@ -68,14 +68,6 @@ The network infrastructure is built using Amazon VPC, consisting of Public and P
 - **Private Subnet:** Hosts Amazon EKS Worker Nodes and Amazon RDS, keeping application workloads and databases from being directly exposed to the Internet.
 - **Internet Gateway:** Attached to the VPC, providing connectivity between the VPC and the Internet.
 
-**Application Load Balancer**
-
-The Application Load Balancer (ALB) is deployed in the Public Subnet to receive incoming traffic from external users and forward requests to the API Gateway of the microservices application running on EKS.
-
-**Application Configuration**
-
-The microservices retrieve their application configurations from the `spring-petclinic-microservices-config` repository on GitHub through the Config Server. The NAT Gateway provides outbound connectivity, allowing components in the Private Subnet to access this repository.
-
 **AWS EKS**
 
 Amazon EKS serves as the platform for deploying and running the microservices application and its supporting components.
@@ -92,6 +84,14 @@ Amazon RDS is deployed in the Private Subnet to host the database for the micros
 **AWS IAM**
 
 AWS IAM manages identities, IAM Roles, and access permissions for system components interacting with AWS services. These permissions allow authorized components to perform the necessary operations on their respective resources.
+
+**Application Load Balancer**
+
+The Application Load Balancer (ALB) is deployed in the Public Subnet to receive incoming traffic from external users and forward requests to the API Gateway of the microservices application running on EKS.
+
+**Application Configuration**
+
+The microservices retrieve their application configurations from the `spring-petclinic-microservices-config` repository on GitHub through the Config Server. The NAT Gateway provides outbound connectivity, allowing components in the Private Subnet to access this repository.
 
 **Pod Scaling**
 
