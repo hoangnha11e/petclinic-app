@@ -133,3 +133,53 @@ The project uses Jenkins to automate application builds, deployments, and infras
 3. **Database Accounts and Secrets Management:** The Jenkins Infra Agent creates secrets in AWS Secrets Manager and database accounts in RDS when needed. This step requires approval before execution.
 4. **Secrets Synchronization:** External Secrets Operator runs inside EKS, retrieves secret values from AWS Secrets Manager, and creates or updates Kubernetes Secrets in the EKS Cluster. Application pods can then use the synchronized secrets to access the database.
 5. **Infrastructure Drift Detection:** The pipeline is scheduled to run once every hour to check the infrastructure state using Terraform Plan. If any drift is detected between the actual infrastructure and the Terraform configuration, the pipeline requests approval before executing `terraform apply` to reconcile the infrastructure with the desired state.
+
+# 5. Application in Action
+
+The following screenshots demonstrate the Spring PetClinic application running successfully on the Kubernetes Cluster.
+
+**Home Page**
+
+Displays the main application interface, providing navigation to owner management and veterinarian-related features.
+
+![Home Page](./assets/Home.png)
+
+**Find Owners**
+
+Displays a list of registered pet owners along with their addresses, cities, telephone numbers, and pets. Users can search for owners using the Search Filter.
+
+![Find Owners](./assets/Find%20Owners.png)
+
+**Register Owner**
+
+Allows users to register a new pet owner by entering their first name, last name, address, city, and telephone number.
+
+![Register Owner](./assets/Register%20Owner.png)
+
+**Veterinarians**
+
+Displays a list of veterinarians and their corresponding specialties.
+
+![Veterinarians](./assets/Veterinarians.png)
+
+# 6. Application Access
+
+The application is deployed on AWS. However, due to limited AWS Credits and operating costs, the deployment environment is not kept running continuously and is only started when needed.
+
+If you would like to access the application, please contact me via email at [**lenhathoang11@outlook.com**](mailto:lenhathoang11@outlook.com) and let me know your preferred access time. I will prepare the environment and provide you with the access URL.
+
+# 7. Credits and License
+
+**Credits**
+
+This project is based on [Spring PetClinic Microservices](https://github.com/spring-petclinic/spring-petclinic-microservices), licensed under Apache License 2.0.
+
+This is an independent project and is not affiliated with or endorsed by the Spring team.
+
+The project extends the upstream application with Docker-based builds, Jenkins pipelines, AWS infrastructure provisioned using Terraform, and Kubernetes deployment managed through Helm and Argo CD.
+
+**License**
+
+The upstream application is licensed under Apache License 2.0. See [LICENSE](LICENSE) for details.
+
+Original copyright and license notices are retained where applicable.
